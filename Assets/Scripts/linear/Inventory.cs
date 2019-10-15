@@ -88,7 +88,10 @@ namespace Linear
                     GUI.Box(new Rect(4.5f * scr.x, 0.275f * scr.y, 2f * scr.x, 2f * scr.y), "");
                     GUI.DrawTexture(new Rect(4.75f * scr.x, 0.475f * scr.y, 1.5f * scr.x, 1.5f * scr.y), selectedItem.Icon);
                     GUI.Box(new Rect(4f * scr.x, 0f * scr.y, 3f * scr.x, .275f * scr.y), selectedItem.Name);
-                    GUI.Box(new Rect(4f * scr.x, 2.275f * scr.y, 3f * scr.x, 3f * scr.y), selectedItem.Desctiption);
+                    GUI.Box(new Rect(4f * scr.x, 2.275f * scr.y, 3f * scr.x, 1f * scr.y), selectedItem.Desctiption);
+                    GUI.Box(new Rect(4f * scr.x, 3.275f * scr.y, 1f * scr.x, .275f * scr.y), "Amount " + selectedItem.Amount);
+                    GUI.Box(new Rect(4f * scr.x, 3.555f * scr.y, 1f * scr.x, .275f * scr.y), "Value " + selectedItem.Value);
+                    GUI.Box(new Rect(4f * scr.x, 3.83f * scr.y, 1f * scr.x, .275f * scr.y), "Durability " + selectedItem.Durability);
                 }
                 else { return; }
             }
@@ -128,6 +131,51 @@ namespace Linear
                     }
                 }
                 GUI.EndScrollView();
+            }
+        }
+
+        void ItemUse(ItemType Type)
+        {
+            switch (Type)
+            {
+                case ItemType.Apparrel:
+                    break;
+                case ItemType.Consumable:
+                    break;
+                case ItemType.Weapon:
+                    break;
+                case ItemType.Potion:
+                    break;
+                case ItemType.Food:
+                    break;
+                case ItemType.Material:
+                    break;
+                case ItemType.Scroll:
+                    break;
+                case ItemType.Quest:
+                    break;
+                case ItemType.Money:
+                    break;
+                case ItemType.Misc:
+                    break;
+                default:
+                    break;
+            }
+            if (GUI.Button(new Rect(scr.x, scr.y, scr.x, scr.y), "Discard"))
+            {
+                for (int i = 0; i < equipmentSlots.Length; i++)
+                {
+                    //check equiped item
+                    if (equipmentSlots[i].curItem != null && selectedItem.ItemMesh.name == equipmentSlots[i].curItem.name)
+                    {
+                        // if deleted
+                        Destroy(equipmentSlots[i].curItem);
+                    }
+                }
+                // sawn in front
+                GameObject droppedItem = Instantiate(selectedItem.ItemMesh, dropLocation.position, Quaternion.identity);
+                droppedItem.name = selectedItem.Name;
+                droppedItem.AddComponent<Rigidbody>().useGravity = true;
             }
         }
     }

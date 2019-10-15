@@ -39,12 +39,8 @@ namespace Linear
                 {
                     invnotloaded = false;
                 }
-            }
-               
-               
-           
+            }                                     
         }
-
         private void Update()
         {
             if (Input.GetKey(KeyCode.A))
@@ -84,16 +80,20 @@ namespace Linear
                 // display the image of selected item
                 if (selectedItem != null)
                 {
+                    #region gui display selected item info
                     GUI.skin = itemTextSkin;
                     GUI.Box(new Rect(4.5f * scr.x, 0.275f * scr.y, 2f * scr.x, 2f * scr.y), "");
                     GUI.DrawTexture(new Rect(4.75f * scr.x, 0.475f * scr.y, 1.5f * scr.x, 1.5f * scr.y), selectedItem.Icon);
                     GUI.Box(new Rect(4f * scr.x, 0f * scr.y, 3f * scr.x, .275f * scr.y), selectedItem.Name);
                     GUI.Box(new Rect(4f * scr.x, 2.275f * scr.y, 3f * scr.x, 1f * scr.y), selectedItem.Desctiption);
-                    GUI.Box(new Rect(4f * scr.x, 3.275f * scr.y, 1f * scr.x, .275f * scr.y), "Amount " + selectedItem.Amount);
-                    GUI.Box(new Rect(4f * scr.x, 3.555f * scr.y, 1f * scr.x, .275f * scr.y), "Value " + selectedItem.Value);
-                    GUI.Box(new Rect(4f * scr.x, 3.83f * scr.y, 1f * scr.x, .275f * scr.y), "Durability " + selectedItem.Durability);
+                    GUI.Box(new Rect(4f * scr.x, 3.275f * scr.y, 1.2f * scr.x, .275f * scr.y), "Amount " + selectedItem.Amount);
+                    GUI.Box(new Rect(4f * scr.x, 3.555f * scr.y, 1.2f * scr.x, .275f * scr.y), "Value " + selectedItem.Value);
+                    GUI.Box(new Rect(4f * scr.x, 3.83f * scr.y, 1.2f * scr.x, .275f * scr.y), "Durability " + selectedItem.Durability);
+                    #endregion
+                    ItemUse(selectedItem.Type);
                 }
                 else { return; }
+               
             }
             GUI.skin = baseSkin;
         }
@@ -161,7 +161,7 @@ namespace Linear
                 default:
                     break;
             }
-            if (GUI.Button(new Rect(scr.x, scr.y, scr.x, scr.y), "Discard"))
+            if (GUI.Button(new Rect(4f*scr.x, 6f*scr.y, 1f*scr.x, .5f*scr.y), "Discard"))
             {
                 for (int i = 0; i < equipmentSlots.Length; i++)
                 {

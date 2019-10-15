@@ -43,6 +43,7 @@ public static class ItemData
                 _mesh = "Apparrel/hat";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 1:
@@ -55,6 +56,7 @@ public static class ItemData
                 _mesh = "Apparrel/brace";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 2:
@@ -67,6 +69,7 @@ public static class ItemData
                 _mesh = "Apparrel/shirt";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -81,6 +84,7 @@ public static class ItemData
                 _mesh = "Consumable/staff";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 4:
@@ -93,6 +97,7 @@ public static class ItemData
                 _mesh = "Consumable/flute";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 5:
@@ -105,6 +110,7 @@ public static class ItemData
                 _mesh = "Consumable/lute";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -119,6 +125,7 @@ public static class ItemData
                 _mesh = "Weapons/sword";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 7:
@@ -131,6 +138,7 @@ public static class ItemData
                 _mesh = "Weapons/axe";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 8:
@@ -143,6 +151,7 @@ public static class ItemData
                 _mesh = "Weapons/bluesword";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -153,10 +162,11 @@ public static class ItemData
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Potion;
-                _icon = "Potion/pis";
-                _mesh = "Potion/pis";
+                _icon = "Potions/pis";
+                _mesh = "Potions/pis";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 10:
@@ -165,10 +175,11 @@ public static class ItemData
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Potion;
-                _icon = "Potion/red";
-                _mesh = "Potion/red";
+                _icon = "Potions/red";
+                _mesh = "Potions/red";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 11:
@@ -177,10 +188,11 @@ public static class ItemData
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Potion;
-                _icon = "Potion/purple";
-                _mesh = "Potion/purple";
+                _icon = "Potions/purple";
+                _mesh = "Potions/purple";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -195,6 +207,7 @@ public static class ItemData
                 _mesh = "Food/nut";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 13:
@@ -207,6 +220,7 @@ public static class ItemData
                 _mesh = "Food/shroom";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 14:
@@ -219,6 +233,7 @@ public static class ItemData
                 _mesh = "Food/bark";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -233,6 +248,7 @@ public static class ItemData
                 _mesh = "Material/cog";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 16:
@@ -245,6 +261,7 @@ public static class ItemData
                 _mesh = "Material/cloth";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 17:
@@ -257,6 +274,7 @@ public static class ItemData
                 _mesh = "Material/badcloth";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -271,6 +289,7 @@ public static class ItemData
                 _mesh = "Scrolls/blue";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 19:
@@ -283,6 +302,7 @@ public static class ItemData
                 _mesh = "Scrolls/red";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 20:
@@ -295,6 +315,7 @@ public static class ItemData
                 _mesh = "Scrolls/brown";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -309,6 +330,7 @@ public static class ItemData
                 _mesh = "Quest/Randy";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 22:
@@ -321,6 +343,7 @@ public static class ItemData
                 _mesh = "Quest/book";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 23:
@@ -333,6 +356,7 @@ public static class ItemData
                 _mesh = "Quest/die";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -347,6 +371,7 @@ public static class ItemData
                 _mesh = "Money/copper";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 25:
@@ -359,6 +384,7 @@ public static class ItemData
                 _mesh = "Money/silver";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 26:
@@ -371,6 +397,7 @@ public static class ItemData
                 _mesh = "Money/gold";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             #endregion
@@ -385,6 +412,7 @@ public static class ItemData
                 _mesh = "Misc/what";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 28:
@@ -397,6 +425,7 @@ public static class ItemData
                 _mesh = "Misc/gem";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
             case 29:
@@ -409,6 +438,7 @@ public static class ItemData
                 _mesh = "Misc/tool";
                 _damage = 0;
                 _armour = 0;
+                _durability = 0;
                 _heal = 0;
                 break;
                 #endregion

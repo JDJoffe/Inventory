@@ -15,6 +15,8 @@ namespace Linear
         public int money;
         public string sortType = "";
         public Transform dropLocation;
+        public Transform hand;
+        public Transform head;
         [System.Serializable]
         public struct equipment
         {
@@ -39,10 +41,14 @@ namespace Linear
                 {
                     invnotloaded = false;
                 }
-            }                                     
+            }
         }
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                inv[21].Amount += 3;
+            }
             if (Input.GetKey(KeyCode.A))
             {
                 inv.Add(ItemData.CreateItem(Random.Range(0, 29)));
@@ -93,7 +99,7 @@ namespace Linear
                     ItemUse(selectedItem.Type);
                 }
                 else { return; }
-               
+
             }
             GUI.skin = baseSkin;
         }
@@ -161,7 +167,7 @@ namespace Linear
                 default:
                     break;
             }
-            if (GUI.Button(new Rect(4f*scr.x, 6f*scr.y, 1f*scr.x, .5f*scr.y), "Discard"))
+            if (GUI.Button(new Rect(4f * scr.x, 6f * scr.y, 1f * scr.x, .5f * scr.y), "Discard"))
             {
                 for (int i = 0; i < equipmentSlots.Length; i++)
                 {
@@ -175,7 +181,35 @@ namespace Linear
                 // sawn in front
                 GameObject droppedItem = Instantiate(selectedItem.ItemMesh, dropLocation.position, Quaternion.identity);
                 droppedItem.name = selectedItem.Name;
+                // just in case
                 droppedItem.AddComponent<Rigidbody>().useGravity = true;
+                // remove take one away from list
+                if (selectedItem.Amount > 1) { selectedItem.Amount--; }
+                //remove entry from the list
+                else { inv.Remove(selectedItem); selectedItem = null; return; }
+            }
+
+            if (GUI.Button(new Rect(4f * scr.x, 5f * scr.y, 1f * scr.x, .5f * scr.y), "Equip"))
+            {
+                for (int i = 0; i < equipmentSlots.Length; i++)
+                {
+                    //check equiped item
+                    if (equipmentSlots[i].curItem != null && selectedItem.ItemMesh.name == equipmentSlots[i].curItem.name)
+                    {
+                        // if deleted
+                        Destroy(equipmentSlots[i].curItem);
+                    }
+                }
+                if (selectedItem.Type == ItemType.Apparrel)
+                {
+                    // spawn on head
+                    GameObject equippedItem = Instantiate(selectedItem.ItemMesh, head.position, Quaternion.identity,head);
+                }
+                else { GameObject equippedItem = Instantiate(selectedItem.ItemMesh, hand.position, Quaternion.identity,hand); }
+
+
+
+
             }
         }
     }

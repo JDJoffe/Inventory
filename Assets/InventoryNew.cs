@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace Linear
+namespace Lineara
 {
-    public class Inventory : MonoBehaviour
+    public class InventoryNew : MonoBehaviour
     {
         #region var
         public List<Item> inv = new List<Item>();
@@ -90,11 +90,9 @@ namespace Linear
                 {
                     // var = the itemtype associated with the i e.g. if i is 0 var itemtype will be apparrel
                     var itemType = (ItemType)i;
-                    // string is equal to var tostring
-                  string curType   = itemType.ToString();
-                    if (GUI.Button(new Rect(50.25f + i * scr.x, 0, scr.x, 0.25f * scr.y), curType))
+                    if (GUI.Button(new Rect(50.25f + i * scr.x, 0, scr.x, 0.25f * scr.y), itemType.ToString()))
                     {
-                        sortType = curType;
+                        sortType = itemType.ToString();
                     }
                 }
                 // display the image of selected item
@@ -121,97 +119,68 @@ namespace Linear
                     ItemUse(selectedItem.Type);
                 }
                 else { return; }
-
-
                 GUI.skin = baseSkin;
-
-
             }
             void Display()
             {
-                if (!(sortType == "All" || sortType == ""))
+                // amount of that type
+                int a = 0;
+                // slot position
+                int s = 0;
+                for (int i = 0; i < inv.Count; i++)
                 {
-                   // var type = (ItemType)i;
-                  //   sortType = type.ToString();
-                    ItemType type = (ItemType)System.Enum.Parse(typeof(ItemType), sortType);
-                    // amount of that type
-                    int a = 0;
-                    // slot position
-                    int s = 0;
-                    for (int i = 0; i < inv.Count; i++)
+                    if (!(sortType == "All" || sortType == ""))
                     {
+                       //  ItemType type = (ItemType)i;
+                     //   sortType = type.ToString();
+                        ItemType type = (ItemType)System.Enum.Parse(typeof(ItemType), sortType);
                         // find your type
                         if (inv[i].Type == type)
                         {
                             // increment for each item found
                             a++;
-                        }
-                    }
-                    if (a <= 30)
-                    {
-                        for (int i = 0; i < inv.Count; i++)
-                        {
-                            if (inv[i].Type == type)
+                            if (a <= 30)
                             {
-                                if (GUI.Button(new Rect(0.5f * scr.x, .75f * scr.y + s * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y), inv[i].Name))
-                                {
-                                    selectedItem = inv[i];
-                                }
-                                s++;
+                                shortButton(0.5f * scr.x, .75f * scr.y + s * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y, inv[i].Name, i);                              
+                                    s++;                              
+                            }
+                            else
+                            {
+                                scrollpos = GUI.BeginScrollView(new Rect(0, .75f * scr.y, 3.75f * scr.x, 8.5f * scr.y), scrollpos, new Rect(0, 0, 0, 8.5f * scr.y + ((inv.Count - 30) * (0.25f * scr.y))), false, true);
+                                shortButton(0.5f * scr.x, 0 * scr.y + s * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y, inv[i].Name, i);                             
+                                    s++;
+                                GUI.EndScrollView();
                             }
                         }
                     }
                     else
                     {
-                        scrollpos = GUI.BeginScrollView(new Rect(0, .75f * scr.y, 3.75f * scr.x, 8.5f * scr.y), scrollpos, new Rect(0, 0, 0, 8.5f * scr.y + ((inv.Count - 30) * (0.25f * scr.y))), false, true);
-                        for (int i = 0; i < inv.Count; i++)
+                        // if we have less than or equal to 35
+                        if (inv.Count <= 30)
                         {
-                            if (inv[i].Type == type)
-                            {
-                                if (GUI.Button(new Rect(0.5f * scr.x, 0 * scr.y + s * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y), inv[i].Name))
-                                {
-                                    selectedItem = inv[i];
-                                }
-                                s++;
-                            }
+                            shortButton(0.5f * scr.x, .75f * scr.y + i * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y, inv[i].Name, i);                        
                         }
-                        GUI.EndScrollView();
+                        else
+                        {
+                            // movable scroll pos start of viewable area our view window  our current scroll pos scroll zone extra space  horizontal bar visible? vertical bar visible?                     
+                            scrollpos = GUI.BeginScrollView(new Rect(0, .75f * scr.y, 3.75f * scr.x, 8.5f * scr.y), scrollpos, new Rect(0, 0, 0, 8.5f * scr.y + ((inv.Count - 30) * (0.25f * scr.y))), false, true);
+                            shortButton(0.5f*scr.x,0*scr.y+i*(0.25f*scr.y),3f*scr.x,0.25f*scr.y,inv[i].Name,i);                         
+                            GUI.EndScrollView();
+                        }
                     }
                 }
-                else
+                // short button to call when you wanna make a button
+                #region Button
+                void shortButton(float xP, float yP, float w, float h, string txt, int i)
                 {
-                    // if we have less than or equal to 35
-                    if (inv.Count <= 30)
-                    {
-                        for (int i = 0; i < inv.Count; i++)
-                        {
-                            if (GUI.Button(new Rect(0.5f * scr.x, .75f * scr.y + i * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y), inv[i].Name))
-                            {
-                                selectedItem = inv[i];
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // movable scroll pos
-                        //start of viewable area
-                        // our view window
-                        // our current scroll pos
-                        // scroll zone extra space
-                        // horizontal bar visible?
-                        // vertical bar visible?
-                        scrollpos = GUI.BeginScrollView(new Rect(0, .75f * scr.y, 3.75f * scr.x, 8.5f * scr.y), scrollpos, new Rect(0, 0, 0, 8.5f * scr.y + ((inv.Count - 30) * (0.25f * scr.y))), false, true);
-                        for (int i = 0; i < inv.Count; i++)
-                        {
-                            if (GUI.Button(new Rect(0.5f * scr.x, 0 * scr.y + i * (0.25f * scr.y), 3f * scr.x, 0.25f * scr.y), inv[i].Name))
-                            {
-                                selectedItem = inv[i];
-                            }
-                        }
-                        GUI.EndScrollView();
+                    if (GUI.Button(new Rect(xP, yP, w, h), txt))
+                    {                   
+                        selectedItem = inv[i];
                     }
                 }
+                #endregion
             }
+
             #region Equip&Unequip
             // my equip now boyee
             void EquipUnequip(int j)
@@ -231,6 +200,7 @@ namespace Linear
                 }
                 else
                 {
+
                     if (GUI.Button(new Rect(4f * scr.x, 5.2f * scr.y, 2f * scr.x, .5f * scr.y), "Unequip"))
                     {
                         if (equipmentSlots[j].curItem != null)

@@ -34,6 +34,7 @@ public class Item
 #region Enum
 public enum ItemType
 {
+    All,
     Apparrel,
     Consumable,
     Weapon,

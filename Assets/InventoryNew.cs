@@ -76,6 +76,7 @@ namespace Lineara
         }
         private void OnGUI()
         {
+            
             GUI.skin = baseSkin;
             if (showInv)
             {

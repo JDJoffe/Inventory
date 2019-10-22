@@ -79,7 +79,7 @@ MonoBehaviour:
     m_FixedWidth: 0
     m_FixedHeight: 0
     m_StretchWidth: 1
-    m_StretchHeight: 0
+    m_StretchHeight: 1
   m_button:
     m_Name: button
     m_Normal:

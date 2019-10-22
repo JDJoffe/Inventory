@@ -80,8 +80,8 @@ public static class ItemData
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Consumable;
-                _icon = "Consumable/staff";
-                _mesh = "Consumable/staff";
+                _icon = "Consumable/staff of panic";
+                _mesh = "Consumable/staff of panic";
                 _damage = 0;
                 _armour = 0;
                 _durability = 0;
@@ -116,7 +116,7 @@ public static class ItemData
             #endregion
             #region Weapon
             case 6:
-                _name = "swod";
+                _name = "sword";
                 _desctiption = "swing swing";
                 _amount = 1;
                 _value = 1;
@@ -403,13 +403,13 @@ public static class ItemData
             #endregion
             #region Misc
             case 27:
-                _name = "???";
+                _name = "unknown";
                 _desctiption = "M̫̹̰̮͇̙̞̪͙̫̬̙͎̅́ͫ͑̎̀͘͟å̸̧̪̣̩̭̻̞̗͇͉̝̪̫̓͑̾̀͘͢͡ͅy̵̡̧̝̼̠͍͖̖̱̩͎͖͙͕͍͍̞̜̼͎ͬͣ̇ͫ̀ͫͧ̉̃ͮ̅͆͜I̷̼͔͕̗̦͓̰̟͚̩̘̞̻̙͕͔̔̌̅ͫ̏͑ͮ̌͐̊̍ͨ͘͢͜͜t̷͔̲̻̮͈̺̯̋̇̄̑̅͗̓ͯ͌̏͂́͑̐̆̐͐ͨS̸̺̟̰͍ͭ̓͌̃ͦ̽ͥͦ̔̀̾͆̑̆́̄̉͜p̷͓̱͓̝ͯ͂̔ͮ̾͒ͤ̀ͩ͒ͧͩͩͯ͜a̵̫̬̹͚͈̜̠̬ͪͮ̏͗̍̏̀ͭ͡r̷̡̢̢̛̠͇̭͙̹͊ͥ̊̑̾̿̎̽̿̇ͭ̅ȩ̴̺͓̲̤̰̞̦̺͋̄̏̃ͨͮͩͩ͆ͫ̓Y̨̧̲͙̣̱̬̪͈͇̠̜̤̘͐͐̎ͨ̐ö̇ͮ͋̉̑͡҉̤̰̙̘̱̮̺̳͓͔͖͙̺̱̬̖u̜̹̩̝͙̹͇̖ͬͯ̃̽͊̏̌͗ͣ̃͗̊̓͝͡";
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Misc;
-                _icon = "Misc/what";
-                _mesh = "Misc/what";
+                _icon = "Misc/unknown";
+                _mesh = "Misc/unknown";
                 _damage = 0;
                 _armour = 0;
                 _durability = 0;

@@ -404,15 +404,15 @@ MonoBehaviour:
   dropLocation: {fileID: 935643643}
   hand: {fileID: 614979778}
   head: {fileID: 515663944}
+  itemTextSkin: {fileID: 0}
+  baseSkin: {fileID: 0}
   equipmentSlots:
-  - name: Head
+  - name: head
     location: {fileID: 515663944}
     curItem: {fileID: 0}
-  - name: Hand
+  - name: hand
     location: {fileID: 614979778}
     curItem: {fileID: 0}
-  itemTextSkin: {fileID: 11400000, guid: d2aa8d9da46b13649ab506cfd85a2bf4, type: 2}
-  baseSkin: {fileID: 11400000, guid: 2c8ba9953dd94864fb3e90791412f008, type: 2}
 --- !u!1 &1860475563
 GameObject:
   m_ObjectHideFlags: 0

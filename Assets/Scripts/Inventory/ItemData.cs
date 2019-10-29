@@ -455,7 +455,7 @@ public static class ItemData
             Armour = _armour,
             Heal = _heal,
             Type = _type,
-            Icon = Resources.Load("Icons/" + _icon) as Texture2D,
+            Icon = Resources.Load("Icons/" + _icon) as Sprite,
             ItemMesh = Resources.Load("Mesh/" + _mesh) as GameObject,
         };
         return temp;

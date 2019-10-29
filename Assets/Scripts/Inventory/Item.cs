@@ -12,7 +12,7 @@ public class Item
     int _durability;
     int _armour;
     int _heal;
-    Texture2D _icon;
+    Sprite _icon;
     GameObject _mesh;
     ItemType _type;
     #endregion
@@ -26,7 +26,7 @@ public class Item
     public int Durability { get { return _durability; } set { _durability = value; } }
     public int Armour { get { return _armour; } set { _armour = value; } }
     public int Heal { get { return _heal; } set { _heal = value; } }
-    public Texture2D Icon { get { return _icon; } set { _icon = value; } }
+    public Sprite Icon { get { return _icon; } set { _icon = value; } }
     public GameObject ItemMesh { get { return _mesh; } set { _mesh = value; } }
     public ItemType Type { get { return _type; } set { _type = value; } }
     #endregion

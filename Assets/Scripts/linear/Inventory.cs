@@ -108,7 +108,7 @@ namespace Linear
                     //tex box
                     GUI.Box(new Rect(4.5f * scr.x, 1f * scr.y, 2f * scr.x, 2f * scr.y), "");
                     //tex
-                    GUI.DrawTexture(new Rect(4.75f * scr.x, 1.275f * scr.y, 1.5f * scr.x, 1.5f * scr.y), selectedItem.Icon);
+                  //  GUI.DrawTexture(new Rect(4.75f * scr.x, 1.275f * scr.y, 1.5f * scr.x, 1.5f * scr.y), selectedItem.Icon);
                     //desc
                     GUI.Box(new Rect(4f * scr.x, 3.275f * scr.y, 3f * scr.x, 1f * scr.y), selectedItem.Desctiption);
                     //amount

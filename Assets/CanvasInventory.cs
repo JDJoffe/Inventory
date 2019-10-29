@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 namespace Lineara
 {
-    public class InventoryNew : MonoBehaviour
+    public class CanvasInventory : MonoBehaviour
     {
         #region var
         public List<Item> inv = new List<Item>();
@@ -17,8 +18,14 @@ namespace Lineara
         public Transform dropLocation;
         public Transform hand;
         public Transform head;
-        public GUISkin itemTextSkin;
-        public GUISkin baseSkin;
+        #region UI
+        GameObject inventory, itemPanel;
+        Text itemName,itemDesc,itemAmount,itemValue,itemDur;
+        Image itemImage;
+        public ScrollRect view;
+        public GameObject invButton;
+        public RectTransform content;
+        #endregion
         [System.Serializable]
         public struct equipment
         {
@@ -34,6 +41,15 @@ namespace Lineara
         // Start is called before the first frame update
         void Start()
         {
+            content = GameObject.Find("Content").GetComponent<RectTransform>();
+            inventory = GameObject.Find("Canvas Inventory");
+            itemPanel = GameObject.Find("ItemPanel");           
+            itemName = GameObject.Find("Name").GetComponent<Text>();
+            itemDesc = GameObject.Find("Description").GetComponent<Text>();
+            itemAmount = GameObject.Find("Amount").GetComponent<Text>();
+            itemValue = GameObject.Find("Value").GetComponent<Text>();
+            itemDur = GameObject.Find("Durability").GetComponent<Text>();
+            itemImage = GameObject.Find("Image").GetComponent<Image>();
             int o = 0;
             while (invnotloaded)
             {
@@ -47,6 +63,7 @@ namespace Lineara
         }
         private void Update()
         {
+          //  content.sizeDelta = new Vector2(208.3f, 30 * inv.Count);
             if (Input.GetKeyDown(KeyCode.D))
             {
                 inv[21].Amount += 3;
@@ -60,6 +77,7 @@ namespace Lineara
                 showInv = !showInv;
                 if (showInv)
                 {
+                    inventory.SetActive(true);
                     Time.timeScale = 0;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -67,60 +85,52 @@ namespace Lineara
                 }
                 else
                 {
+                    inventory.SetActive(false);
                     Time.timeScale = 1;
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
                     return;
                 }
             }
+            invshow();
         }
-        private void OnGUI()
+        
+        void SortType()
+        {                        
+                    sortType = EventSystem.current.currentSelectedGameObject.name;                         
+        }
+           void invshow()
         {
-            
-            GUI.skin = baseSkin;
             if (showInv)
             {
                 // you would normally put this in an options menu
                 scr.x = Screen.width / 16;
                 scr.y = Screen.height / 9;
-
-                GUI.Box(new Rect(0, 0, scr.x * 12, Screen.height), "");
+               
                 Display();
 
-                for (int i = 0; i < 11; i++)
-                {
-                    // var = the itemtype associated with the i e.g. if i is 0 var itemtype will be apparrel
-                    var itemType = (ItemType)i;
-                    if (GUI.Button(new Rect(50.25f + i * scr.x, 0, scr.x, 0.25f * scr.y), itemType.ToString()))
-                    {
-                        sortType = itemType.ToString();
-                    }
-                }
+               
                 // display the image of selected item
                 if (selectedItem != null)
                 {
                     #region gui display selected item info
-                    GUI.skin = itemTextSkin;
-
                     //name
-                    GUI.Box(new Rect(4f * scr.x, .5f * scr.y, 3f * scr.x, .275f * scr.y), selectedItem.Name);
-                    //tex box
-                    GUI.Box(new Rect(4.5f * scr.x, 1f * scr.y, 2f * scr.x, 2f * scr.y), "");
+                    itemName.text = selectedItem.Name;
                     //tex
-                    GUI.DrawTexture(new Rect(4.75f * scr.x, 1.275f * scr.y, 1.5f * scr.x, 1.5f * scr.y), selectedItem.Icon);
+                     // itemImage = selectedItem.Icon;
                     //desc
-                    GUI.Box(new Rect(4f * scr.x, 3.275f * scr.y, 3f * scr.x, 1f * scr.y), selectedItem.Desctiption);
+                    itemDesc.text = selectedItem.Desctiption;
                     //amount
-                    GUI.Box(new Rect(4f * scr.x, 4.3f * scr.y, 1.2f * scr.x, .275f * scr.y), "Amount " + selectedItem.Amount);
+                   itemAmount.text = selectedItem.Amount.ToString();
                     //value
-                    GUI.Box(new Rect(4f * scr.x, 4.6f * scr.y, 1.2f * scr.x, .275f * scr.y), "Value " + selectedItem.Value);
+                    itemValue.text = selectedItem.Value.ToString();
                     //durability
-                    GUI.Box(new Rect(4f * scr.x, 4.9f * scr.y, 1.2f * scr.x, .275f * scr.y), "Durability " + selectedItem.Durability);
+                   itemDur.text = selectedItem.Durability.ToString();
                     #endregion
                     ItemUse(selectedItem.Type);
                 }
                 else { return; }
-                GUI.skin = baseSkin;
+            }     
             }
             void Display()
             {
@@ -188,8 +198,7 @@ namespace Lineara
             {
                 if (equipmentSlots[j].curItem == null || selectedItem.Name != equipmentSlots[j].curItem.name)
                 {
-                    if (GUI.Button(new Rect(4f * scr.x, 5.2f * scr.y, 2f * scr.x, .5f * scr.y), "Equip"))
-                    {
+                   
                         if (equipmentSlots[j].curItem != null)
                         {
                             Destroy(equipmentSlots[j].curItem);
@@ -197,13 +206,12 @@ namespace Lineara
                         equippedItem = Instantiate(selectedItem.ItemMesh, equipmentSlots[j].location);
                         equipmentSlots[j].curItem = equippedItem;
                         equippedItem.name = selectedItem.Name;
-                    }
+                    
                 }
                 else
                 {
 
-                    if (GUI.Button(new Rect(4f * scr.x, 5.2f * scr.y, 2f * scr.x, .5f * scr.y), "Unequip"))
-                    {
+                   
                         if (equipmentSlots[j].curItem != null)
                         {
                             Destroy(equipmentSlots[j].curItem);
@@ -211,9 +219,34 @@ namespace Lineara
                         equippedItem.name = null;
                         equipmentSlots[j].curItem = null;
                         Destroy(equippedItem);
-                    }
+                    
 
                 }
+            }
+            #endregion
+            #region Discard
+            void Discard()
+            {
+                for (int i = 0; i < equipmentSlots.Length; i++)
+                {
+                    //check equiped item
+                    if (equipmentSlots[i].curItem != null && selectedItem.ItemMesh.name == equipmentSlots[i].curItem.name)
+                    {
+                        // if deleted
+                        Destroy(equipmentSlots[i].curItem);
+
+                    }
+                }
+                // spawn in front
+                GameObject droppedItem = Instantiate(selectedItem.ItemMesh, dropLocation.position, Quaternion.identity);
+                droppedItem.name = selectedItem.Name;
+                // just in case
+                droppedItem.AddComponent<Rigidbody>().useGravity = true;
+                // remove take one away from list
+                if (selectedItem.Amount > 1) { selectedItem.Amount--; }
+                //remove entry from the list
+                else { inv.Remove(selectedItem); selectedItem = null; return; }
+
             }
             #endregion
             #region ItemUse
@@ -248,31 +281,10 @@ namespace Lineara
                     default:
                         break;
                 }
-                if (GUI.Button(new Rect(4f * scr.x, 6f * scr.y, 1f * scr.x, .5f * scr.y), "Discard"))
-                {
-                    for (int i = 0; i < equipmentSlots.Length; i++)
-                    {
-                        //check equiped item
-                        if (equipmentSlots[i].curItem != null && selectedItem.ItemMesh.name == equipmentSlots[i].curItem.name)
-                        {
-                            // if deleted
-                            Destroy(equipmentSlots[i].curItem);
-
-                        }
-                    }
-                    // spawn in front
-                    GameObject droppedItem = Instantiate(selectedItem.ItemMesh, dropLocation.position, Quaternion.identity);
-                    droppedItem.name = selectedItem.Name;
-                    // just in case
-                    droppedItem.AddComponent<Rigidbody>().useGravity = true;
-                    // remove take one away from list
-                    if (selectedItem.Amount > 1) { selectedItem.Amount--; }
-                    //remove entry from the list
-                    else { inv.Remove(selectedItem); selectedItem = null; return; }
-                }
+               
             }
             #endregion
-        }
+        
     }
 }
 

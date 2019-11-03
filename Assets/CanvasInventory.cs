@@ -135,22 +135,33 @@ namespace Lineara
             else { return; }
 
         }
-        #region buttons
+        #region buttons      
         public void SortType(ItemType type)
         {
+           
+            
             sortType = EventSystem.current.currentSelectedGameObject.name;
+          
+            Debug.Log("sort called");
+            if (type.ToString() == sortType)
+            {
 
-            //if (type.ToString() == sortType)
-            //{
-            //    List<GameObject> invButton2 = new List<GameObject>();
-            //    invButton2.Add(invButton);
-            //    if (inv[type].Type.ToString() != sortType)
-            //    {
-            //        invButton2[i].SetActive(false);
-            //    }
-            //    else { invButton2[i].SetActive(true); /*invButton2.Remove(invButton);*/ }
-            //}         
-        }     
+                for (int i = 0; i < sortType.Length; i++)
+                {
+                    List<GameObject> invButton2 = new List<GameObject>();
+                    invButton2.Add(invButton);
+                    if (inv[i].Type.ToString() != sortType)
+                    {
+                        invButton2[i].SetActive(false);
+                        Debug.Log("sort did job");
+                    }
+                    else { invButton2[i].SetActive(true); /*invButton2.Remove(invButton);*/ Debug.Log("sort did other job"); }
+                }
+            }
+
+
+        }
+      
         public void SelectItem(Item item)
         {
             selectedItem = item;

@@ -302,7 +302,16 @@ public class DragDrop : MonoBehaviour
                 i++;
             }
         }
-        
+        #region drag points
+        // top
+        GUI.DragWindow(new Rect(0, 0, scr.x * 6, scr.y * 0.25f));
+        // left
+        GUI.DragWindow(new Rect(0, scr.y * 0.25f, scr.x * 0.25f, scr.y * 3.75f));
+        // right
+        GUI.DragWindow(new Rect(scr.x * 5.5f, scr.y * 0.25f, scr.x * 0.25f, scr.y * 3.75f));
+        // bottom
+        GUI.DragWindow(new Rect(0, scr.y * 4, scr.x * 6, scr.y * 0.25f));
+        #endregion
     }
     #endregion
     #endregion
@@ -349,7 +358,7 @@ public class DragDrop : MonoBehaviour
             invSize = new Rect(scr.x, scr.y, scr.x * 6, scr.y * 4.5f);
             equipSize = new Rect(invSize.x * 2, scr.y, scr.x * 2, scr.y * 4);
             Vector2 invpos = invSize.position;
-            equipSize.x = invSize.x + invpos.x ;
+            equipSize.position = invSize.position + invpos  ;
         }
         // add a random item will make removing possible when its not broken
         addremove();

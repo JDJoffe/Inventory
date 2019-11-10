@@ -96,11 +96,12 @@ public class HoverInv : MonoBehaviour
         }
         #endregion
         #region tooltip text
-        toolTipPanel.SetActive(false);
+       
         itemName = GameObject.Find("NameTxt").GetComponent<Text>();
         itemDesc = GameObject.Find("DescTxt").GetComponent<Text>();
         itemAmount = GameObject.Find("AmountTxt").GetComponent<Text>();
         itemValue = GameObject.Find("ValueTxt").GetComponent<Text>();
+        toolTipPanel.SetActive(false);
         #endregion
     }
 
@@ -190,29 +191,29 @@ public class HoverInv : MonoBehaviour
     //}
     #endregion
     #region abomination of a bool that came from me trying to understand the alien code
-    //public bool EventImgMatchSlotImg(int i)
-    //{
-    //    // make mouse event that is == to current event
-    //    PointerEventData eventData = new PointerEventData(EventSystem.current);
-    //    // make event position to be the mouse position
-    //    eventData.position = Input.mousePosition;
-    //    // make list of raycasts that will store this  eventdata
-    //    List<RaycastResult> raysastResults = new List<RaycastResult>();
-    //    // return a raycast of the eventdata and the list
-    //    EventSystem.current.RaycastAll(eventData, raysastResults);
-    //    // for every entry in the list cycle through
-    //    for (int index = 0; index < raysastResults.Count; index++)
-    //    {
-    //        // if the raycasted object in the list has the same image as the invslot then they are the same object
-    //        if (raysastResults[index].gameObject.GetComponent<Image>() == invSlots[i])
-    //        {
-    //            // ditch
-    //            return true;
-    //        }
-    //    }
-    //    // return false cause this code wont be reached if it returns true
-    //    return false;
-    //}
+    public bool EventImgMatchSlotImg(int i)
+    {
+        // make mouse event that is == to current event
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        // make event position to be the mouse position
+        eventData.position = Input.mousePosition;
+        // make list of raycasts that will store this  eventdata
+        List<RaycastResult> raysastResults = new List<RaycastResult>();
+        // return a raycast of the eventdata and the list
+        EventSystem.current.RaycastAll(eventData, raysastResults);
+        // for every entry in the list cycle through
+        for ( i = 0; i < raysastResults.Count; i++)
+        {
+            // if the raycasted object in the list has the same image as the invslot then they are the same object
+            if (raysastResults[i].gameObject.GetComponent<Image>() == invSlots[i])
+            {
+                // ditch
+                return true;
+            }
+        }
+        // return false cause this code wont be reached if it returns true
+        return false;
+    }
     #endregion
     #region itemDrag
     private void ItemDrag()
@@ -224,6 +225,7 @@ public class HoverInv : MonoBehaviour
 
         for (int i = 0; i < invSlots.Count; i++)
         {
+          
             GameObject slot = invSlots[i].gameObject;
             Rect bounds = invSlots[i].rectTransform.rect;
             bounds.position = invSlots[i].transform.position;
@@ -233,7 +235,7 @@ public class HoverInv : MonoBehaviour
             //    Debug.Log(i);
             //}
 
-            if (e.button == 0 && e.pointerPress == slot /*&& EventImgMatchSlotImg(i)*/ &&/*slotLocal[i].Contains(e.mousePosition) && */!isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift))
+            if (e.button == 0 /*&& e.pointerPress == slot*/ && EventImgMatchSlotImg(i) /*&&*//*slotLocal[i].Contains(e.mousePosition) && *//*!isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift)*/)
             {
                 Debug.Log(i + " " + invSlots[i].transform.position + "\n" + e.pointerPress);
             }

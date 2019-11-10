@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 public class HoverInv : MonoBehaviour
 {
     #region var
@@ -15,6 +16,7 @@ public class HoverInv : MonoBehaviour
     public int slotX, slotY;
     Vector2 scr;
     [Header("Dragging")]
+
     public bool isDragging;
     public int draggedFrom;
     public Item draggedItem;
@@ -25,7 +27,8 @@ public class HoverInv : MonoBehaviour
     public bool showToolTip;
     KeyCode toggleTip = KeyCode.Semicolon;
     public Rect toolTipRect;
-   [Header("Slot lists")]
+    public GameObject toolTipPanel;
+    [Header("Slot lists")]
     #region slots
     GameObject invparent, questparent;
     GameObject[] weaponparent = new GameObject[3], armourparent = new GameObject[4];
@@ -77,7 +80,7 @@ public class HoverInv : MonoBehaviour
         invSlots.RemoveAt(0);
         for (int i = 0; i < 8; i++)
         {
-            questSlots.Add(questparent.GetComponentsInChildren<Image>()[i]);           
+            questSlots.Add(questparent.GetComponentsInChildren<Image>()[i]);
         }
         // remove first in list because it is dumb and gets the parent's image
         questSlots.RemoveAt(0);
@@ -93,6 +96,7 @@ public class HoverInv : MonoBehaviour
         }
         #endregion
         #region tooltip text
+        toolTipPanel.SetActive(false);
         itemName = GameObject.Find("NameTxt").GetComponent<Text>();
         itemDesc = GameObject.Find("DescTxt").GetComponent<Text>();
         itemAmount = GameObject.Find("AmountTxt").GetComponent<Text>();
@@ -103,6 +107,11 @@ public class HoverInv : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (showToolTip)
+        {
+            toolTipPanel.SetActive(true);
+        }
+        else { toolTipPanel.SetActive(false); }
         if (Input.GetKeyDown(toggle))
         {
             ToggleInv();
@@ -111,6 +120,7 @@ public class HoverInv : MonoBehaviour
         {
             AddItem(rand = Random.Range(0, 30));
         }
+        ItemDrag();
     }
     #region toggle inv
     public void ToggleInv()
@@ -126,7 +136,9 @@ public class HoverInv : MonoBehaviour
         }
         else
         {
+            toolTipPanel.SetActive(false);
             inventory.SetActive(false);
+            
             // unfreeze time and lock mouse
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
@@ -151,36 +163,118 @@ public class HoverInv : MonoBehaviour
         }
     }
     #endregion
-    #region drag drop
-    private void OnMouseDrag()
+    #region code that i copied and tried to understand
+    //public static bool IsPointerOverUIElement()
+    //{
+    //    return IsPointerOverUIElement(GetEventSystemRaycastResults());
+    //}
+    /////Returns 'true' if we touched or hovering on Unity UI element.
+    //public static bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+    //{
+    //    for (int index = 0; index < eventSystemRaysastResults.Count; index++)
+    //    {
+    //        RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+    //        if (curRaysastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
+    //            return true;
+    //    }
+    //    return false;
+    //}
+    /////Gets all event systen raycast results of current mouse or touch position.
+    //static List<RaycastResult> GetEventSystemRaycastResults()
+    //{
+    //    PointerEventData eventData = new PointerEventData(EventSystem.current);
+    //    eventData.position = Input.mousePosition;
+    //    List<RaycastResult> raysastResults = new List<RaycastResult>();
+    //    EventSystem.current.RaycastAll(eventData, raysastResults);
+    //    return raysastResults;
+    //}
+    #endregion
+    #region abomination of a bool that came from me trying to understand the alien code
+    //public bool EventImgMatchSlotImg(int i)
+    //{
+    //    // make mouse event that is == to current event
+    //    PointerEventData eventData = new PointerEventData(EventSystem.current);
+    //    // make event position to be the mouse position
+    //    eventData.position = Input.mousePosition;
+    //    // make list of raycasts that will store this  eventdata
+    //    List<RaycastResult> raysastResults = new List<RaycastResult>();
+    //    // return a raycast of the eventdata and the list
+    //    EventSystem.current.RaycastAll(eventData, raysastResults);
+    //    // for every entry in the list cycle through
+    //    for (int index = 0; index < raysastResults.Count; index++)
+    //    {
+    //        // if the raycasted object in the list has the same image as the invslot then they are the same object
+    //        if (raysastResults[index].gameObject.GetComponent<Image>() == invSlots[i])
+    //        {
+    //            // ditch
+    //            return true;
+    //        }
+    //    }
+    //    // return false cause this code wont be reached if it returns true
+    //    return false;
+    //}
+    #endregion
+    #region itemDrag
+    private void ItemDrag()
     {
         showToolTip = false;
-        #region grid nested for loops
-        // 
-        int i = 0;
-        Event e = Event.current;
-        for (int y = 0; y < slotY; y++)
+
+        int itm = 0;
+        PointerEventData e = new PointerEventData(EventSystem.current);
+
+        for (int i = 0; i < invSlots.Count; i++)
         {
-            for (int x = 0; x < slotX; x++)
+            GameObject slot = invSlots[i].gameObject;
+            Rect bounds = invSlots[i].rectTransform.rect;
+            bounds.position = invSlots[i].transform.position;
+            slot = e.pointerPress;
+            //if (bounds.Contains(slot.transform.position))
+            //{
+            //    Debug.Log(i);
+            //}
+
+            if (e.button == 0 && e.pointerPress == slot /*&& EventImgMatchSlotImg(i)*/ &&/*slotLocal[i].Contains(e.mousePosition) && */!isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift))
             {
-                Rect slotLocation = new Rect(scr.x * 0.125f + x * (scr.x * 0.75f), scr.y * 0.75f + y * (scr.y * 0.65f), scr.x * 0.75f, scr.y * 0.65f);
-                GUI.Box(slotLocation, "");
-                #region pickup item
-                // 
-                if (e.button == 0 && e.type == EventType.MouseDown && slotLocation.Contains(e.mousePosition) && !isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift))
-                {
-                    draggedItem = inv[i];
-                    inv[i] = new Item();
-                    isDragging = true;
-                    isEquippable = false;
-                    draggedFrom = i;
-                    Debug.Log("Currently dragging your " + draggedItem.Name);
-                }
-                #endregion
+                Debug.Log(i + " " + invSlots[i].transform.position + "\n" + e.pointerPress);
             }
+            else { return; }
+            itm++;
+
+
         }
-        #endregion
+
     }
     #endregion
+    //#region drag drop
+    //private void OnMouseDrag()
+    //{
+    //    showToolTip = false;
+    //    #region grid nested for loops
+    //    // 
+    //    int i = 0;
+    //    Event e = Event.current;
+    //    for (int y = 0; y < slotY; y++)
+    //    {
+    //        for (int x = 0; x < slotX; x++)
+    //        {
+    //            Rect slotLocation = new Rect(scr.x * 0.125f + x * (scr.x * 0.75f), scr.y * 0.75f + y * (scr.y * 0.65f), scr.x * 0.75f, scr.y * 0.65f);
+    //            GUI.Box(slotLocation, "");
+    //            #region pickup item
+    //            // 
+    //            if (e.button == 0 && e.type == EventType.MouseDown && slotLocation.Contains(e.mousePosition) && !isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift))
+    //            {
+    //                draggedItem = inv[i];
+    //                inv[i] = new Item();
+    //                isDragging = true;
+    //                isEquippable = false;
+    //                draggedFrom = i;
+    //                Debug.Log("Currently dragging your " + draggedItem.Name);
+    //            }
+    //            #endregion
+    //        }
+    //    }
+    //    #endregion
+    //}
+    //#endregion
 }
 

@@ -72,7 +72,7 @@ public class HoverInv : MonoBehaviour
         #endregion
         #region add parent children to list of images
         // search and get images
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 22; i++)
         {
             invSlots.Add(invparent.GetComponentsInChildren<Image>()[i]);
         }

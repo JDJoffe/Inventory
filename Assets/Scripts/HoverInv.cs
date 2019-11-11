@@ -16,7 +16,7 @@ public class HoverInv : MonoBehaviour
     public int slotX, slotY;
     Vector2 scr;
     [Header("Dragging")]
-    public int curSlot =0;
+    public int imageFilter = 0;
     public bool isDragging;
     public int draggedFrom;
     public Item draggedItem;
@@ -72,13 +72,13 @@ public class HoverInv : MonoBehaviour
         #endregion
         #region add parent children to list of images
         // search and get images
-        for (int i = 0; i < 22; i++)
+        for (int i = 0; i < invparent.transform.childCount + 1; i++)
         {
             invSlots.Add(invparent.GetComponentsInChildren<Image>()[i]);
         }
         // remove first in list because it is dumb and gets the parent's image
         invSlots.RemoveAt(0);
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < questparent.transform.childCount + 1; i++)
         {
             questSlots.Add(questparent.GetComponentsInChildren<Image>()[i]);
         }
@@ -96,7 +96,7 @@ public class HoverInv : MonoBehaviour
         }
         #endregion
         #region tooltip text
-       
+
         itemName = GameObject.Find("NameTxt").GetComponent<Text>();
         itemDesc = GameObject.Find("DescTxt").GetComponent<Text>();
         itemAmount = GameObject.Find("AmountTxt").GetComponent<Text>();
@@ -140,7 +140,7 @@ public class HoverInv : MonoBehaviour
         {
             toolTipPanel.SetActive(false);
             inventory.SetActive(false);
-            
+
             // unfreeze time and lock mouse
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
@@ -196,18 +196,19 @@ public class HoverInv : MonoBehaviour
     {
         int i = invSlots.Count + weaponSlots.Count + armourSlots.Count + questSlots.Count;
         // for every entry in the list cycle through
-        for (int j = 0;j < i; j++)
+        for (int j = 0; j < i; j++)
         {
             // if the raycasted object in the list has the same image as the invslot then they are the same object
             if (rayResult[j].gameObject.GetComponent<Image>() == invSlots[j] || weaponSlots[j] || armourSlots[j] || questSlots[j])
             {
-               // curSlot = invSlots.IndexOf(invSlots[j]);             
+
+                // imageFilter = invSlots.IndexOf(invSlots[j]);             
                 Debug.Log("wawa");
                 Debug.Log(j);
                 // ditch
                 return true;
             }
-            
+           
         }
         // return false cause this code wont be reached if it returns true
         return false;
@@ -217,19 +218,19 @@ public class HoverInv : MonoBehaviour
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // make list the length of the item backpack list
         // !!!!!!!!!!!!!!!!!!!!!!!!!!
-        
+
         // make mouse event that is == to current event
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         // make event position to be the mouse position
         eventData.position = Input.mousePosition;
         // make list of raycasts that will store this  eventdata
         List<RaycastResult> raysastResults = new List<RaycastResult>();
-       
+
         // return a raycast of the eventdata and the list
         EventSystem.current.RaycastAll(eventData, raysastResults);
         foreach (var item in raysastResults)
         {
-            curSlot = raysastResults.IndexOf(item);
+            imageFilter = raysastResults.IndexOf(item);
         }
         return raysastResults;
     }
@@ -242,28 +243,63 @@ public class HoverInv : MonoBehaviour
     private void ItemDrag()
     {
         showToolTip = false;
-
+        int i = 0;
         ImgHover();
         PointerEventData e = new PointerEventData(EventSystem.current);
 
+        GameObject slot = e.selectedObject;
         
-       
-            GameObject slot = invSlots[curSlot].gameObject;
-            Rect bounds = invSlots[curSlot].rectTransform.rect;
-            bounds.position = invSlots[curSlot].transform.position;
-            slot = e.pointerPress;
-            //if (bounds.Contains(slot.transform.position))
-            //{
-            //    Debug.Log(i);
-            //}
-
-            if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonDown(0)&& ImgHoverTrue() /*&&*//*slotLocal[i].Contains(e.mousePosition) && *//*!isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift)*/)
-            {
-                Debug.Log("BackPackSlot " + curSlot);                         
-            }
-            else { return; }
+        // drag
+        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonDown(0) && ImgHoverTrue() && imageFilter == 3 && !isDragging /*&& inv[i].Name != null*/)
+        {
+            Debug.Log("BackPackSlot " + imageFilter);
+           // draggedItem = inv[i];
+          //  inv[i] = new Item();
+           // isDragging = true;
+            isEquippable = false;
+            draggedFrom = i;
+            i++;
+        }
+        else { return; }
+        // swap
+        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonUp(0) && ImgHoverTrue() && imageFilter == 3 && isDragging /*&& inv[i].Name != null*/)
+        {
+            Debug.Log("BackPackSlot " + imageFilter);
+            Debug.Log("Swapped your items " + draggedItem.Name + "&" + inv[i].Name);
+          //  inv[draggedFrom] = inv[i];
+            //inv[i] = draggedItem;
+            //draggedItem = new Item();
+            isEquippable = false;
+            isDragging = false;
+            i++;
+        }
+        // place item
+        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonUp(0) && ImgHoverTrue() && imageFilter == 3 && isDragging /*&& inv[i].Name == null*/)
+        {
+            Debug.Log("BackPackSlot " + imageFilter);
             
-
+            //inv[i] = draggedItem;
+            draggedItem = new Item();
+            isEquippable = false;
+            isDragging = false;
+            i++;
+        }
+        // render image
+        //#region draw item icon
+        //if (inv[i].Name != null)
+        //{
+        //   // slot.transform. = inv[i].Icon;
+        //  //  GUI.DrawTexture(s, inv[i].Icon);
+        //    #region set tooltip mousehover
+        //    if (ImgHoverTrue() && imageFilter == 3&&!isDragging && toggleInv)
+        //    {
+        //        toolTipItem = i;
+        //        showToolTip = true;
+        //    }
+        //    #endregion
+        //}
+        //#endregion
+        else { return; }
         
 
     }

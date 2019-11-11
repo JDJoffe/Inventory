@@ -194,21 +194,20 @@ public class HoverInv : MonoBehaviour
     #region abomination of a bool that came from me trying to understand the alien code
     public bool EventImgMatchSlotImg(List<RaycastResult> rayResult)
     {
-      
+        int i = invSlots.Count + weaponSlots.Count + armourSlots.Count + questSlots.Count;
         // for every entry in the list cycle through
-        for (curSlot = 0;curSlot < rayResult.Count; curSlot++)
+        for (int j = 0;j < i; j++)
         {
             // if the raycasted object in the list has the same image as the invslot then they are the same object
-            if (rayResult[curSlot].gameObject.GetComponent<Image>() == invSlots[curSlot])
+            if (rayResult[j].gameObject.GetComponent<Image>() == invSlots[j] || weaponSlots[j] || armourSlots[j] || questSlots[j])
             {
-                curSlot = invSlots.IndexOf(invSlots[curSlot]);
-                Debug.Log(curSlot);
-                
-                Debug.Log(rayResult.IndexOf(rayResult[curSlot]));
+               // curSlot = invSlots.IndexOf(invSlots[j]);             
+                Debug.Log("wawa");
+                Debug.Log(j);
                 // ditch
                 return true;
             }
-           
+            
         }
         // return false cause this code wont be reached if it returns true
         return false;
@@ -218,20 +217,23 @@ public class HoverInv : MonoBehaviour
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // make list the length of the item backpack list
         // !!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+        
         // make mouse event that is == to current event
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         // make event position to be the mouse position
         eventData.position = Input.mousePosition;
         // make list of raycasts that will store this  eventdata
         List<RaycastResult> raysastResults = new List<RaycastResult>();
+       
         // return a raycast of the eventdata and the list
         EventSystem.current.RaycastAll(eventData, raysastResults);
-       
+        foreach (var item in raysastResults)
+        {
+            curSlot = raysastResults.IndexOf(item);
+        }
         return raysastResults;
     }
-    public bool imgHoverTrue()
+    public bool ImgHoverTrue()
     {
         return EventImgMatchSlotImg(ImgHover());
     }
@@ -255,7 +257,7 @@ public class HoverInv : MonoBehaviour
             //    Debug.Log(i);
             //}
 
-            if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonDown(0)&& imgHoverTrue() /*&&*//*slotLocal[i].Contains(e.mousePosition) && *//*!isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift)*/)
+            if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonDown(0)&& ImgHoverTrue() /*&&*//*slotLocal[i].Contains(e.mousePosition) && *//*!isDragging && inv[i].Name != null && !Input.GetKey(KeyCode.LeftShift)*/)
             {
                 Debug.Log("BackPackSlot " + curSlot);                         
             }

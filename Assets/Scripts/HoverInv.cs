@@ -215,6 +215,11 @@ public class HoverInv : MonoBehaviour
     }
     public List<RaycastResult> ImgHover()
     {
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // make list the length of the item backpack list
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
         // make mouse event that is == to current event
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         // make event position to be the mouse position

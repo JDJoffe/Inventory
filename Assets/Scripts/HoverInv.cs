@@ -191,33 +191,28 @@ public class HoverInv : MonoBehaviour
     //    return raysastResults;
     //}
     #endregion
-    #region abomination of a bool that came from me trying to understand the alien code
+    #region abominations that came from me trying to understand the alien code
     public bool EventImgMatchSlotImg(List<RaycastResult> rayResult)
     {
-        int i = invSlots.Count + weaponSlots.Count + armourSlots.Count + questSlots.Count;
+        // int i = invSlots.Count + weaponSlots.Count + armourSlots.Count + questSlots.Count;
+        int j = 0;
         // for every entry in the list cycle through
-        for (int j = 0; j < i; j++)
+        // for (int j = 0; j < i; j++)
+        // {
+        // if the raycasted object in the list has the same image as the invslot then they are the same object
+        if (rayResult[j].gameObject.GetComponent<Image>() == invSlots[j] || weaponSlots[j] || armourSlots[j] || questSlots[j])
         {
-            // if the raycasted object in the list has the same image as the invslot then they are the same object
-            if (rayResult[j].gameObject.GetComponent<Image>() == invSlots[j] || weaponSlots[j] || armourSlots[j] || questSlots[j])
-            {
-
-                // imageFilter = invSlots.IndexOf(invSlots[j]);             
-                Debug.Log("wawa");
-                Debug.Log(j);
-                // ditch
-                return true;
-            }
-           
+            // imageFilter = invSlots.IndexOf(invSlots[j]);                           
+            Debug.Log(j + " im so confused");
+            // ditch
+            return true;
         }
+        //  }
         // return false cause this code wont be reached if it returns true
         return false;
     }
     public List<RaycastResult> ImgHover()
     {
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // make list the length of the item backpack list
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // make mouse event that is == to current event
         PointerEventData eventData = new PointerEventData(EventSystem.current);
@@ -230,8 +225,26 @@ public class HoverInv : MonoBehaviour
         EventSystem.current.RaycastAll(eventData, raysastResults);
         foreach (var item in raysastResults)
         {
-            imageFilter = raysastResults.IndexOf(item);
+            // if (item.isValid)
+            //{
+            if (item.gameObject.layer == LayerMask.NameToLayer("UI"))
+            {
+                imageFilter = raysastResults.IndexOf(item);
+                Debug.Log(imageFilter);
+                if (imageFilter == 3)
+                {
+                    // insert tooltip item info here and shit
+                    showToolTip = true;
+                    Vector2 tooltipPos = Input.mousePosition;
+                    Vector2 mouseOffset = new Vector3(140, 0);
+                    tooltipPos += mouseOffset;
+                    toolTipPanel.transform.position = tooltipPos;
+                }
+            }
+
+            //}           
         }
+
         return raysastResults;
     }
     public bool ImgHoverTrue()
@@ -248,25 +261,25 @@ public class HoverInv : MonoBehaviour
         PointerEventData e = new PointerEventData(EventSystem.current);
 
         GameObject slot = e.selectedObject;
-        
+
         // drag
-        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonDown(0) && ImgHoverTrue() && imageFilter == 3 && !isDragging /*&& inv[i].Name != null*/)
+        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonDown(0) && ImgHoverTrue()/* && imageFilter == 3*/ && !isDragging /*&& inv[i].Name != null*/)
         {
             Debug.Log("BackPackSlot " + imageFilter);
-           // draggedItem = inv[i];
-          //  inv[i] = new Item();
-           // isDragging = true;
+            // draggedItem = inv[i];
+            //  inv[i] = new Item();
+            // isDragging = true;
             isEquippable = false;
             draggedFrom = i;
             i++;
         }
         else { return; }
         // swap
-        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonUp(0) && ImgHoverTrue() && imageFilter == 3 && isDragging /*&& inv[i].Name != null*/)
+        if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonUp(0) && ImgHoverTrue() && imageFilter == 3 && !isDragging /*&& inv[i].Name != null*/)
         {
             Debug.Log("BackPackSlot " + imageFilter);
             Debug.Log("Swapped your items " + draggedItem.Name + "&" + inv[i].Name);
-          //  inv[draggedFrom] = inv[i];
+            //  inv[draggedFrom] = inv[i];
             //inv[i] = draggedItem;
             //draggedItem = new Item();
             isEquippable = false;
@@ -277,7 +290,7 @@ public class HoverInv : MonoBehaviour
         if (e.button == 0 /*&& e.pointerPress == slot*/ && Input.GetMouseButtonUp(0) && ImgHoverTrue() && imageFilter == 3 && isDragging /*&& inv[i].Name == null*/)
         {
             Debug.Log("BackPackSlot " + imageFilter);
-            
+
             //inv[i] = draggedItem;
             draggedItem = new Item();
             isEquippable = false;
@@ -299,8 +312,8 @@ public class HoverInv : MonoBehaviour
         //    #endregion
         //}
         //#endregion
-        else { return; }
-        
+
+
 
     }
     #endregion

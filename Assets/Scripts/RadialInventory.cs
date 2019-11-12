@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RadialInventory : MonoBehaviour
 {
+    public List<Item> inv = new List<Item>();
     #region var
     [Header("Main UI")]
     public bool showSelectMenu;
@@ -18,7 +19,7 @@ public class RadialInventory : MonoBehaviour
     public Vector2 iconSize;
     public bool showIcons, showBoxes, showBounds;
     [Range(0.1f, 1)]
-    public float iconSizeNum;
+    public float iconSizeNum = 1;
     [Range(-360, 360)]
     public int radialRot;
     [SerializeField]
@@ -58,7 +59,7 @@ public class RadialInventory : MonoBehaviour
             // make a circle yay
             boundPos[i].x = circleCentre.x + circleRadius * Mathf.Cos(ang * Mathf.Deg2Rad);
             boundPos[i].y = circleCentre.y + circleRadius * Mathf.Sin(ang * Mathf.Deg2Rad);
-
+            ang += sectorDegree;
         }
         return boundPos;
     }
@@ -79,7 +80,14 @@ public class RadialInventory : MonoBehaviour
     {
         for (int i = 0; i < slots; i++)
         {
-            GUI.DrawTexture(new Rect(pos[i].x - (scrW * iconSizeNum * 0.5f), pos[i].y - (scrH * iconSizeNum * 0.5f), scrW * iconSizeNum, scrH * iconSizeNum), slotTex);
+            // have a var that is == to slots -i and decrease by 1 each time the for loop runs
+            // slots-i-1
+            // 1st run slots = 8, i = 0, 1 = 1
+            // inv[7].icon
+            // 2nd run slots = 8, i = 1, 1 = 1
+            // inv[6].icon
+            //etc...
+            GUI.DrawTexture(new Rect(pos[i].x - (scrW * iconSizeNum * 0.5f), pos[i].y - (scrH * iconSizeNum * 0.5f), scrW * iconSizeNum, scrH * iconSizeNum), inv[slots-i-1].Icon);
         }
     }
     private int CheckCurrentSector(float ang)
@@ -143,7 +151,11 @@ public class RadialInventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        for (int i = 0; i < 9; i++)
+        {
+            inv.Add(ItemData.CreateItem(i));
+        }
+       
     }
     // Update is called once per frame
     void Update()
@@ -173,19 +185,30 @@ public class RadialInventory : MonoBehaviour
             // deadzone
             GUI.Box(new Rect(Scr(7.5f, 4), Scr(1, 1)), "");
             // circle 
-            GUI.DrawTexture(new Rect(circleCentre.x - circleRadius - (circleScaleOffset / 4), circleCentre.y - circleRadius - (circleScaleOffset / 4), (circleRadius * 2) + (circleScaleOffset / 2), (circleRadius * 2) + (circleScaleOffset / 2)), radialTex);
+            GUI.DrawTexture(new Rect(
+                circleCentre.x - circleRadius - (circleScaleOffset / 4),
+                circleCentre.y - circleRadius - (circleScaleOffset / 4),
+                (circleRadius * 2) + (circleScaleOffset / 2), 
+                (circleRadius * 2) + (circleScaleOffset / 2)), radialTex);
             if (showBoxes)
             {
                 for (int i = 0; i < numOfSectors; i++)
                 {
-                    GUI.DrawTexture(new Rect(slotPos[i].x - (-scrW * iconSizeNum * 0.5f), slotPos[i].y - (scrH * iconSizeNum * 0.5f), scrW * iconSizeNum, scrH * iconSizeNum), slotTex);
+                    GUI.DrawTexture(new Rect(
+                        slotPos[i].x - (scrW * iconSizeNum * 0.5f),
+                        slotPos[i].y - (scrH * iconSizeNum * 0.5f),
+                        scrW * iconSizeNum,
+                        scrH * iconSizeNum), slotTex);
                 }
             }
             if (showBounds)
             {
                 for (int i = 0; i < numOfSectors; i++)
                 {
-                    GUI.Box(new Rect(boundPos[i].x - (scrW * 0.1f * 0.5f), boundPos[i].y - (scrH * 0.1f * 0.5f), scrW * 0.1f, scrH * 0.1f), "");
+                    GUI.Box(new Rect(
+                        boundPos[i].x - (scrW * 0.1f * 0.5f),
+                        boundPos[i].y - (scrH * 0.1f * 0.5f),
+                        scrW * 0.1f, scrH * 0.1f), "");
                 }
             }
             if (showIcons)

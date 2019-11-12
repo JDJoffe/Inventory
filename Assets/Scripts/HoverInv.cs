@@ -9,10 +9,10 @@ public class HoverInv : MonoBehaviour
     [Header("Inventory")]
     public bool toggleInv = false;
     KeyCode toggle = KeyCode.Tab;
-    public List<Item> inv = new List<Item>();
-    public List<Item> armour = new List<Item>();
-    public List<Item> weapons = new List<Item>();
-    public List<Item> quest = new List<Item>();
+    public List<CanvasItem> inv = new List<CanvasItem>();
+    public List<CanvasItem> armour = new List<CanvasItem>();
+    public List<CanvasItem> weapons = new List<CanvasItem>();
+    public List<CanvasItem> quest = new List<CanvasItem>();
     public int slotX, slotY;
     Vector2 scr;
     [Header("Dragging")]
@@ -55,6 +55,7 @@ public class HoverInv : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        inv.Add(CanvasItemData.CreateItem(1));
         #region find parents
         // inv
         invparent = GameObject.Find("BackPack");
@@ -102,6 +103,18 @@ public class HoverInv : MonoBehaviour
         itemAmount = GameObject.Find("AmountTxt").GetComponent<Text>();
         itemValue = GameObject.Find("ValueTxt").GetComponent<Text>();
         toolTipPanel.SetActive(false);
+        #endregion
+        #region addItems
+       // for (int i = 0; i < invparent.transform.childCount; i++)
+       // {
+            inv.Add(CanvasItemData.CreateItem(0));
+        inv.Add(CanvasItemData.CreateItem(2));
+        inv.Add(CanvasItemData.CreateItem(3));
+        inv.Add(CanvasItemData.CreateItem(4));
+
+        invSlots[1].sprite = inv[1].Icon;
+          //invSlots[i] = inv[i].Icon;
+      //  }
         #endregion
 
     }
@@ -158,7 +171,7 @@ public class HoverInv : MonoBehaviour
             // if the slot has space create an item there
             if (inv[i].Name == null)
             {
-                inv[i] = ItemData.CreateItem(itemID);
+                inv[i] = CanvasItemData.CreateItem(itemID);
                 Debug.Log("Added Item: " + inv[i].Name);
                 return;
             }
@@ -200,7 +213,7 @@ public class HoverInv : MonoBehaviour
         // for (int j = 0; j < i; j++)
         // {
         // if the raycasted object in the list has the same image as the invslot then they are the same object
-        if (rayResult[j].gameObject.GetComponent<Image>() == invSlots[j] || weaponSlots[j] || armourSlots[j] || questSlots[j])
+        if ( rayResult[j].gameObject.GetComponent<Image>() == invSlots[j] || weaponSlots[j] || armourSlots[j] || questSlots[j])
         {
             // imageFilter = invSlots.IndexOf(invSlots[j]);                           
             Debug.Log(j + " im so confused");
@@ -229,12 +242,19 @@ public class HoverInv : MonoBehaviour
             //{
             if (item.gameObject.layer == LayerMask.NameToLayer("UI"))
             {
+                int i = 0;
                 imageFilter = raysastResults.IndexOf(item);
                 Debug.Log(imageFilter);
                 if (imageFilter == 3)
                 {
+
+                   
                     // insert tooltip item info here and shit
                     showToolTip = true;
+                    itemName.text = inv[0].Name;
+                    itemAmount.text = inv[0].Amount.ToString();
+                    itemDesc.text = inv[0].Desctiption;
+                    itemValue.text = inv[0].Value.ToString();
                     Vector2 tooltipPos = Input.mousePosition;
                     Vector2 mouseOffset = new Vector3(140, 0);
                     tooltipPos += mouseOffset;
